@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            <property name="caseSensitive" value="true"/>
+            <property name="useActualColumnNames" value="true"/>
+            <property name="beginningDelimiter" value="`"/>
+            <property name="endingDelimiter" value="`"/>
+        </plugin>
+
+
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/testdb"
+                        userId="root"
+                        password="www.3power.CN"/>
+
+        <javaModelGenerator
+                targetPackage="test.entity"
+                targetProject="src/test/java"/>
+
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/test/resources"/>
+
+        <javaClientGenerator targetPackage="test.mapper"
+                             targetProject="src/test/java"
+                             type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--        注：生成的OrderEntity，实际对应的表名为t_order_0，并非逻辑表t_order_logic-->
+        <!--        解决办法有2个：-->
+        <!--        1. 生成后，手动修改@Table(name = "`t_order_0`")为@Table(name = "`t_order_logic`")-->
+        <!--        2. 直接在db中创建一个t_order_logic的表，仅用于生成代码-->
+        <table tableName="t_order_0" domainObjectName="OrderEntity"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <generatedKey column="order_id" sqlStatement="MYSQL" identity="true"/>
+        </table>
+
+    </context>
+</generatorConfiguration>
